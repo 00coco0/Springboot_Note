@@ -361,7 +361,18 @@ public class TestRunner implements ApplicationRunner {
 
 当然也可以使用CommandLineRunner，它也支持使用@Order或是实现Ordered接口来支持优先级执行。
 
-这个功能比较简单，不多做介绍了。
+如何创建ApplicationRunner 文件:
+
+1. **创建一个新的Java类文件**:
+   在你的Spring Boot项目中，选择合适的包路径（例如，如果你有一个名为`service`的包，用于存放服务相关的类，或者`configuration`用于配置相关的类，等等）。如果没有特定的包路径偏好，你也可以直接放在应用的根包路径下。
+
+2. **实现`ApplicationRunner`接口**:
+   在你的新类中，实现`ApplicationRunner`接口，并重写它的`run`方法。
+
+3. **使用`@Component`注解**:
+   将你的类标记为Spring组件，这样Spring框架在启动时会自动检测并注册你的`ApplicationRunner`。
+
+当你启动你的Spring Boot应用时，Spring Boot会自动加载所有带有`@Component`（或其他类似的注解，如`@Service`、`@Repository`等）的类，并在所有的其他组件都初始化完成之后，执行你自定义的`ApplicationRunner`的`run`方法。这样你就创建并注册了一个自定义的ApplicationRunner到你的Spring Boot应用中。
 
 ### 配置文件介绍
 
