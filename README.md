@@ -97,6 +97,7 @@ SpringBoot是现在最主流的开发框架，国内的公司基本都在使用�
 
 每个文件的功能：
 -main 里面的 DemoApplication 是主文件，在public 里运行文件
+
 -pom.xml 里面包含了各种依赖路径，我们可以在main 或者test之类的应用这些library。
 
 ### 常用模块快速整合
