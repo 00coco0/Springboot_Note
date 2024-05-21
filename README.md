@@ -376,6 +376,67 @@ public class TestRunner implements ApplicationRunner {
 
 ### 配置文件介绍
 
+#### 什么时候需要手动配置文件
+手动配置通常在你需要覆盖Spring Boot自动配置的默认行为或者需要添加特定的配置以支持自定义的功能时发挥作用。这种情况通常发生在应用程序变得更加成熟和复杂，有更多的特定需求时。下面是一个需要手动配置的例子：
+
+### 场景：自定义数据源配置
+
+1. 假设你正在构建一个Spring Boot应用程序，该程序需要连接到一个数据库。Spring Boot会自动配置一个内置的数据库连接池，如果你引入了如H2、HSQL或Derby之类的嵌入式数据库，并且没有配置数据源，它会默认创建一个内存中的数据库实例。但现在，你的应用需要连接到一个生产环境中的MySQL数据库服务器，这需要你手动配置数据源的属性。
+
+在这种情况下，你会在`application.properties`或`application.yml`文件中进行配置，如下所示：
+
+```properties
+# application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=myuser
+spring.datasource.password=mypassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.datasource.initialization-mode=always # 如果需要Spring Boot初始化数据库
+```
+
+或者在`application.yml`：
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: myuser
+    password: mypassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #initialization-mode: always # 如果需要Spring Boot初始化数据库
+```
+
+这个例子中，手动配置是必要的因为：
+
+1. 默认的数据库连接配置不再适用；
+2. 你需要指定具体的数据库连接参数，包括URL、用户名、密码和驱动类名；
+3. 你可能还需要配置连接池的属性，如最大连接数、连接超时时间等。
+
+### 另一个场景：集成非Spring库
+
+考虑一种情况，你的Spring Boot应用需要集成一个第三方库，比如一个Java库，用于消息队列的处理，但这个库并没有Spring Boot的自动配置支持。
+
+在这种情况下，你可能需要创建配置类，并使用`@Configuration`注解来定义Bean，并显式地设置所需的属性和连接参数，例如：
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MessagingConfig {
+
+  @Bean
+  public MessageService messageService() {
+    MessageService messageService = new ExternalMessageService();
+    // Configure the service as required
+    messageService.setUrl("tcp://message-broker.example.com");
+    messageService.setCredentials("user", "password");
+    // 更多的配置...
+    return messageService;
+  }
+}
+```
+
 前面我们已经体验了SpringBoot带来的快捷开发体验，不过我们发现有些东西还是需要我们自己来编写配置才可以，不然SpringBoot项目无法正常启动，我们来看看如何编写配置。我们可以直接在`application.properties`中进行配置编写，它是整个SpringBoot的配置文件，比如要修改服务器的默认端口：
 
 ![image-20230715232124133](https://s2.loli.net/2023/07/15/E3nsZG7DcaSzOBY.png)
