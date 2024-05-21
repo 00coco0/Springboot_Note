@@ -498,6 +498,9 @@ spring:
 
 ![image-20230716000431492](https://s2.loli.net/2023/07/16/ygRp98mDKafXkw1.png)
 
+#### 在哪里写
+在application.yaml 在这里去改编写配置
+
 ```java
 @Data
 public class User {
@@ -509,7 +512,8 @@ public class User {
 ```
 
 注意，在SpringBoot整合之后，我们只需要直接在配置类上添加`@MapperScan`注解即可，跟我们之前的使用方法是一样的：
-
+#### 在哪里写
+在testcontroller 文件，也就是要运用的文件上写这个。这里有两种写的方式， @Mapper 更为方便
 ```java
 @Configuration
 @MapperScan("com.example.mapper")
